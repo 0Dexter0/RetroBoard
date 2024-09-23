@@ -1,0 +1,21 @@
+﻿<div class="mud-input-control mud-input-input-control">
+    <div class="mud-input-control-input-container">
+        <div class="mud-input mud-input-filled">
+            <textarea
+                id="@TextAreaId"
+                class="mud-input-slot mud-input-root w-100 align-content-center pr-2 pl-2"
+                type="text"
+                inputmode="text"
+                rows="@_rows"
+                style="resize: none; overflow-y: hidden; background: none;"
+                oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                onmouseenter="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                onmouseleave="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                onclick="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                disabled="@Disabled"
+                @bind:get="Value"
+                @bind:set="SetValueAsync">
+            </textarea>
+        </div>
+    </div>
+</div>

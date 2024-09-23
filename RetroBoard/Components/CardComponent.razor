@@ -1,0 +1,52 @@
+﻿@using Size = MudBlazor.Size
+
+<MudCard Class="border-1 rounded-1 m-1" @onmouseenter="@(() => _isEditButtonVisible = true)" @onmouseleave="@(() => _isEditButtonVisible = false)">
+    @if (!_isEditPressed)
+    {
+        <MudCardHeader Style="">
+            <CardHeaderContent>
+                <div class="d-flex align-center justify-center">
+                    <MudText Class="mb-2 text-center" Style="font-size: 21px; width: fit-content">@Title</MudText>
+                </div>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent Class="border-1">
+            <MudText Typo="Typo.h3" Class="">@Content</MudText>
+            <div class="w-100" style="position: absolute; margin-top: -15px; margin-left: -25px">
+                <div class="d-flex justify-content-end">
+                    <MudIconButton Ripple="false" hidden="@(!_isEditButtonVisible)" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Dark" @onclick="@(() => RemoveCardAsync(Card))" Style="margin: 5px 5px"/>
+                    <MudIconButton Ripple="false" hidden="@(!_isEditButtonVisible)" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Dark" @onclick="() => _isEditPressed = true" Style="margin: 5px 5px"/>
+                </div>
+            </div>
+        </MudCardContent>
+        <MudExpansionPanel Text="Action items">
+            <div class="d-flex align-center pb-5">
+                <MudAutoGrowTextField @bind-Value="@_actionItemContent" TextAreaId="@_actionTextAreaId"/>
+                <MudFab StartIcon="@Icons.Material.Rounded.Add" @onclick="CreateActionItem" Size="Size.Small" Class="ml-2"/>
+            </div>
+            @{ bool isFirst = true; }
+            @foreach (var item in Card.ActionItems)
+            {
+                if (isFirst)
+                {
+                    <MudAutoGrowTextField Value="@item.Content" Disabled="true" />
+                    isFirst = false;
+                    continue;
+                }
+                <MudDivider/>
+                <MudAutoGrowTextField Value="@item.Content" Disabled="true" />
+            }
+        </MudExpansionPanel>
+    }
+    else
+    {
+        <MudCardContent Class="" Style="">
+            <MudTextField Label="Title" Variant="Variant.Filled" T="string" @bind-Value="Title" />
+            <MudAutoGrowTextField @bind-Value="@Content" />
+            <div style="display:flex; flex-direction: row; justify-content: end; align-items: center; margin-bottom: 3px">
+                <MudIconButton Ripple="false" Size="Size.Small" Icon="@Icons.Material.Filled.Close" Color="Color.Dark" OnClick="Discard"/>
+                <MudIconButton Ripple="false" Size="Size.Small" Icon="@Icons.Material.Filled.Check" Color="Color.Dark" OnClick="SaveAsync"/>
+            </div>
+        </MudCardContent>
+    }
+</MudCard>

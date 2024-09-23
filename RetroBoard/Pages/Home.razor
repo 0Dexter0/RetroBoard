@@ -1,0 +1,35 @@
+﻿@page "/"
+@using RetroBoard.Shared.Services
+@inject NavigationManager Navigator
+@inject RetroBoardService BoardService
+
+<PageTitle>RetroBoard</PageTitle>
+<div class="w-auto d-grid" style="place-items: center; height: 70vh; overflow: hidden">
+    <div class="d-flex" style="font-size: 25px">
+        <div style="width: 350px">
+            <MudTextField
+                @bind-Value="BoardName"
+                Variant="Variant.Filled"
+                Class="rounded-2"
+                Style="font-size: 25px"
+                Label="Board name"/>
+        </div>
+        <MudButton
+            Variant="Variant.Filled"
+            Style="background-color: cornflowerblue"
+            Class="ml-2 rounded-5"
+            @onclick="CreateBoard">Create</MudButton>
+    </div>
+</div>
+
+@code
+{
+    public string BoardName { get; set; } = String.Empty;
+
+    private void CreateBoard()
+    {
+        Board board = new(BoardName) { Id = Guid.NewGuid() };
+        BoardService.Boards.Add(board);
+        Navigator.NavigateTo($"boards/{board.Id.ToString()}");
+    }
+}

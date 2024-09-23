@@ -1,0 +1,33 @@
+﻿@page "/boards/{boardId}"
+
+@using Card = RetroBoard.Shared.Models.Card
+@using Size = MudBlazor.Size
+
+
+<PageTitle>@_board.Name Board</PageTitle>
+
+<BoardHeader BoardName="@_board.Name" />
+
+<div class="w-auto h-auto">
+    <MudDropContainer
+        T="Card"
+        Items="@_board.Columns.SelectMany(x => x.Cards)"
+        ItemsSelector="@((card, columnName) => card.ColumnName == columnName)"
+        ItemDropped="ItemDropped">
+        <ChildContent>
+            <div style="display: grid; grid-auto-flow: column; grid-template-columns: repeat(auto-fit, minmax(auto, 1fr));">
+                @foreach (var column in _board.Columns)
+                {
+                    <ColumnComponent Column="@column"/>
+                }
+
+                <div style="padding: 15px; display: flex; justify-content: center; align-items: center; width: 400px;">
+                    @* <input @bind="_newColumnName" type="text" *@
+                    @* style="border-color: black; border-width: thin; font-size: x-large; height: 40px; margin-right: 5px"/> *@
+                    <MudTextField AutoGrow="false" Margin="Margin.Dense" Clearable="true" FullWidth="false" Variant="Variant.Filled" Label="Column name" @bind-Value="_newColumnName" Style="font-size: x-large; margin-right: 5px; border-radius: 5px" />
+                    <MudFab StartIcon="@Icons.Material.Rounded.Add" @onclick="CreateColumn" Size="Size.Small"/>
+                </div>
+            </div>
+        </ChildContent>
+    </MudDropContainer>
+</div>

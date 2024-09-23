@@ -1,0 +1,62 @@
+﻿@using Card = RetroBoard.Shared.Models.Card
+@using Size = MudBlazor.Size
+
+<div style="margin: 15px;
+    min-width: 400px;
+    min-height: 600px;
+    background-color: #929292;
+    box-shadow: 3px 3px 10px 3px black;
+    border-radius: 5px">
+    <div>
+        <div style="float: right">
+            <MudIconButton Icon="@Icons.Material.TwoTone.Close" Size="Size.Small" OnClick="RemoveColumnAsync"/>
+        </div>
+        <div style="height: 70px;" class="d-flex justify-center align-center">
+            @* <div style="height: 70px;"> *@
+            <div style="position: relative; text-align: center" class="mb-5 mt-5">
+                <MudTextField @bind-Value="@Column.Name" Variant="Variant.Outlined" Style="width: 200px; text-align: center" OnBlur="() => SetReadonly()"/>
+                <MudOverlay Visible="@_isOverlayEnabled" LightBackground="true" AutoClose="false" Absolute="true" Style="justify-content: right; align-items:flex-end">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Dark" @onclick="SetEditable" Style="margin: 5px 5px"/>
+                </MudOverlay>
+            </div>
+        </div>
+    </div>
+    <div>
+        @if (!_isCardCreatePressed)
+        {
+        <div class="d-flex align-center justify-center p-2">
+            <MudButton Variant="Variant.Filled" Style="background-color: darkolivegreen" OnClick="@(() => _isCardCreatePressed = true)">Add card</MudButton>
+        </div>
+        }
+        else
+        {
+            <div>
+                <div class="d-flex align-center justify-center ma-2">
+                    <input style="font-size: 17px" class="w-75 text-center bg-transparent border-1 rounded-1" placeholder="Title" @bind="_cardTitle"/>
+                </div>
+                <div class="d-flex align-center justify-center ma-2">
+                    <textarea
+                        style="font-size: 17px; resize: none"
+                        placeholder="Content"
+                        class="w-75 bg-transparent border-1 rounded-1"
+                        oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                        @bind="_cardContent"></textarea>
+                </div>
+                <div class="d-flex align-center justify-center ma-2">
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Cancel" OnClick="@(() => _isCardCreatePressed = false)"/>
+                    <div style="width: 5px"></div>
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Check" OnClick="CreateCard"/>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="h-100">
+        <MudList T="Card" Class="h-100"  ReadOnly="false" Style="">
+            <MudDropZone T="Card" Identifier="@Column.Name" AllowReorder="true" Class="h-100">
+                <ItemRenderer>
+                    <CardComponent Card="@context" RemoveCardAsync="RemoveCardAsync"/>
+                </ItemRenderer>
+            </MudDropZone>
+        </MudList>
+    </div>
+</div>
