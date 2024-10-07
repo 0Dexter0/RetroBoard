@@ -41,11 +41,6 @@ public partial class MainLayout
 
     private void OnClick()
     {
-#if DEBUG
-        string redirect = "/";
-#else
-        string redirect = "RetroBoardDeployment";
-#endif
-        NavigationManager.NavigateTo(redirect);
+        NavigationManager.NavigateTo(NavigationManager.BaseUri);
     }
 }
