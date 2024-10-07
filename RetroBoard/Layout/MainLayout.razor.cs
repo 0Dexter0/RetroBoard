@@ -41,6 +41,11 @@ public partial class MainLayout
 
     private void OnClick()
     {
-        NavigationManager.NavigateTo(Environment.GetEnvironmentVariable("REDIRECT") ?? "/");
+#if DEBUG
+        string redirect = "/";
+#else
+        string redirect = "RetroBoardDeployment";
+#endif
+        NavigationManager.NavigateTo(redirect);
     }
 }
