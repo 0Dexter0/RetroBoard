@@ -34,7 +34,7 @@ public partial class BoardPage : ComponentBase, IDisposable
 
     private void CreateColumn()
     {
-        Column column = new() { Name = _newColumnName, BoardId = _board.Id };
+        Column column = new() { Name = _newColumnName.Trim(), BoardId = _board.Id };
         _newColumnName = String.Empty;
         _board.Columns.Add(column);
     }

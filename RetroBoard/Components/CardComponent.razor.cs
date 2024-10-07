@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using RetroBoard.Shared.Models;
 using RetroBoard.Shared.Services;
 
@@ -11,8 +10,6 @@ public partial class CardComponent : ComponentBase
     private bool _isEditButtonVisible = false;
     private bool _isSettingsPressed = false;
     private string _actionItemContent = string.Empty;
-    private readonly string _actionTextAreaId = Guid.NewGuid().ToString();
-    private IJSObjectReference _module;
 
     [Inject]
     public ColumnRemoveNotificationService NotificationService { get; init; }
@@ -41,8 +38,8 @@ public partial class CardComponent : ComponentBase
 
     private async Task SaveAsync()
     {
-        Card.Title = Title;
-        Card.Content = Content;
+        Card.Title = Title.Trim();
+        Card.Content = Content.Trim();
         _isEditPressed = false;
         _isEditButtonVisible = false;
 

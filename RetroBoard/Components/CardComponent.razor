@@ -41,7 +41,7 @@
         </MudCardContent>
         <MudExpansionPanel Text="Action items" Style="background-color: transparent">
             <div class="d-flex align-center pb-5">
-                <MudTextField AutoGrow="true" @bind-Value="@_actionItemContent" TextAreaId="@_actionTextAreaId"/>
+                <MudTextField AutoGrow="true" @bind-Value="@_actionItemContent"/>
                 <MudFab StartIcon="@Icons.Material.Rounded.Add" @onclick="CreateActionItem" Size="Size.Small" Class="ml-2"/>
             </div>
             @{ bool isFirst = true; }
