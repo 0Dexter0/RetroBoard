@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Blazored.SessionStorage;
+using Microsoft.Extensions.DependencyInjection;
+using MudBlazor;
 using MudBlazor.Services;
 using RetroBoard.Shared.Services;
 
@@ -10,7 +12,11 @@ public static class RetroBoardServicesExtension
     {
         serviceCollection.AddMudServices();
 
-        serviceCollection.AddSingleton<RetroBoardService>();
+        serviceCollection.AddSingleton<IRetroBoardService, RetroBoardService>();
+        serviceCollection.AddSingleton<PaletteProvider>();
+        serviceCollection.AddSingleton<MudThemeProvider>();
         serviceCollection.AddScoped<ColumnRemoveNotificationService>();
+        serviceCollection.AddBlazoredSessionStorageAsSingleton();
+        // serviceCollection.AddBlazoredSessionStorage();
     }
 }

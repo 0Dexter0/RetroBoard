@@ -1,42 +1,32 @@
-﻿using RetroBoard.Shared.Models;
+﻿using Blazored.SessionStorage;
+using RetroBoard.Shared.Models;
 
 namespace RetroBoard.Shared.Services;
 
-public class RetroBoardService
+internal class RetroBoardService : IRetroBoardService
 {
-    public List<Board> Boards { get; init; } = new()
+    private readonly List<Board> _boards = new();
+    private readonly ISyncSessionStorageService _sessionStorageService;
+
+    public RetroBoardService(ISyncSessionStorageService sessionStorageService)
     {
-        new("B1")
+        _sessionStorageService = sessionStorageService;
+    }
+
+    public IReadOnlyCollection<Board> GetBoards()
+    {
+        if (_sessionStorageService.ContainKey("boards") && !_boards.Any())
         {
-            Id = Guid.Empty,
-            Columns =
-            [
-                new()
-                {
-                    Name = "Column1",
-                    Cards =
-                    [
-                        new()
-                        {
-                            ColumnName = "Column1",
-                            Content = "Card1",
-                            Title = "C1"
-                        },
-                        new()
-                        {
-                            ColumnName = "Column1",
-                            Content = "Card2",
-                            Title = "C2"
-                        },
-                        new()
-                        {
-                            ColumnName = "Column1",
-                            Content = "Card3",
-                            Title = "C3"
-                        }
-                    ]
-                }
-            ]
+            _boards.AddRange(_sessionStorageService.GetItem<List<Board>>("boards"));
         }
-    };
+
+        return _boards;
+    }
+
+    public async void AddBoard(Board board)
+    {
+        _boards.Add(board);
+
+        _sessionStorageService.SetItem("boards", _boards);
+    }
 }

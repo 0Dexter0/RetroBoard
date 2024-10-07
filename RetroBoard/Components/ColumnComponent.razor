@@ -1,23 +1,53 @@
 ﻿@using Card = RetroBoard.Shared.Models.Card
+@using Colors = RetroBoard.Shared.Colors
 @using Size = MudBlazor.Size
 
 <div style="margin: 15px;
     min-width: 400px;
     min-height: 600px;
-    background-color: #929292;
     box-shadow: 3px 3px 10px 3px black;
     border-radius: 5px">
     <div>
         <div style="float: right">
             <MudIconButton Icon="@Icons.Material.TwoTone.Close" Size="Size.Small" OnClick="RemoveColumnAsync"/>
         </div>
-        <div style="height: 70px;" class="d-flex justify-center align-center">
-            @* <div style="height: 70px;"> *@
+        <div style="" class="d-flex justify-center align-center">
             <div style="position: relative; text-align: center" class="mb-5 mt-5">
-                <MudTextField @bind-Value="@Column.Name" Variant="Variant.Outlined" Style="width: 200px; text-align: center" OnBlur="() => SetReadonly()"/>
-                <MudOverlay Visible="@_isOverlayEnabled" LightBackground="true" AutoClose="false" Absolute="true" Style="justify-content: right; align-items:flex-end">
-                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Dark" @onclick="SetEditable" Style="margin: 5px 5px"/>
-                </MudOverlay>
+                @if (_isEditPressed)
+                {
+                    <MudInput @bind-Value="@_columnName" Variant="Variant.Filled" Style="width: 200px; text-align: center"/>
+                    <div style="display:flex; flex-direction: row; justify-content: end; align-items: center; margin-bottom: 3px">
+                        <MudIconButton
+                            Ripple="false"
+                            Size="Size.Small"
+                            Icon="@Icons.Material.Filled.Close"
+                            Style=@($"color: {Colors.Black}")
+                            OnClick="Discard"/>
+                        <MudIconButton
+                            Ripple="false"
+                            Size="Size.Small"
+                            Icon="@Icons.Material.Filled.Check"
+                            Style=@($"color: {Colors.Black}")
+                            OnClick="SaveAsync"/>
+                    </div>
+                }
+                else
+                {
+                    <div @onmouseenter="@(() => _isEditButtonVisible = true)" @onmouseleave="@(() => _isEditButtonVisible = false)">
+                        <MudText Style="width: 200px; text-align: center">@_columnName</MudText>
+                        <div class="w-100" style="position: absolute; margin-top: -25px">
+                            <div class="d-flex justify-content-end">
+                                <MudIconButton
+                                    Ripple="false"
+                                    hidden="@(!_isEditButtonVisible)"
+                                    Icon="@Icons.Material.Filled.Edit"
+                                    Size="Size.Small"
+                                    @onclick="() => _isEditPressed = true"
+                                    Style=@($"margin: 5px 5px; color: {Colors.Black}")/>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -25,27 +55,27 @@
         @if (!_isCardCreatePressed)
         {
         <div class="d-flex align-center justify-center p-2">
-            <MudButton Variant="Variant.Filled" Style="background-color: darkolivegreen" OnClick="@(() => _isCardCreatePressed = true)">Add card</MudButton>
+            <MudButton Variant="Variant.Filled" Style="border-radius: 15px" OnClick="@(() => _isCardCreatePressed = true)" Color="Color.Secondary" >Add card</MudButton>
         </div>
         }
         else
         {
             <div>
-                <div class="d-flex align-center justify-center ma-2">
-                    <input style="font-size: 17px" class="w-75 text-center bg-transparent border-1 rounded-1" placeholder="Title" @bind="_cardTitle"/>
-                </div>
-                <div class="d-flex align-center justify-center ma-2">
-                    <textarea
-                        style="font-size: 17px; resize: none"
-                        placeholder="Content"
-                        class="w-75 bg-transparent border-1 rounded-1"
-                        oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
-                        @bind="_cardContent"></textarea>
-                </div>
-                <div class="d-flex align-center justify-center ma-2">
-                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Cancel" OnClick="@(() => _isCardCreatePressed = false)"/>
+                <MudTextField T="string" @bind-Value="_cardTitle" Variant="Variant.Filled" Label="Title" Class="pr-3 pl-3 pb-1"/>
+                <MudTextField Class="d-flex pr-3 pl-3" T="string" AutoGrow="true" @bind-Value="_cardContent" Variant="Variant.Filled" Label="Content" />
+                
+                <div class="d-flex align-center justify-content-end ma-2">
+                    <MudIconButton
+                        Size="Size.Small"
+                        Icon="@Icons.Material.Filled.Close"
+                        OnClick="@(() => _isCardCreatePressed = false)"
+                        Style=@($"color: {Colors.Black}")/>
                     <div style="width: 5px"></div>
-                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Check" OnClick="CreateCard"/>
+                    <MudIconButton 
+                        Size="Size.Small"
+                        Icon="@Icons.Material.Filled.Check"
+                        OnClick="CreateCard"
+                        Style=@($"color: {Colors.Black}")/>
                 </div>
             </div>
         }

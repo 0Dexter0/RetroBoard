@@ -6,14 +6,11 @@ public class Board
 
     public string Name { get; set; }
 
-    public List<Column> Columns { get; init; } = new()
-    {
-        new() { Name = "Column1"}
-    };
+    public List<Column> Columns { get; init; } = new();
 
     public Board(string name)
     {
-        // Id = Guid.NewGuid();
+        Id = Guid.NewGuid();
         Name = name;
     }
 }

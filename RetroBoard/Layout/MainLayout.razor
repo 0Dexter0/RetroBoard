@@ -1,16 +1,66 @@
-﻿@inherits LayoutComponentBase
+﻿@using MudBlazor.Utilities
+@using Colors = RetroBoard.Shared.Colors
+@inherits LayoutComponentBase
 
 <MudDialogProvider />
 <MudPopoverProvider />
-<div style="height: 100vh; background-color: white">
-    <div style="padding: 15px; background-color: darkolivegreen">
-        <h2>RetroBoard</h2>
-    </div>
-    @Body
-</div>
+<MudLayout>
+    <MudThemeProvider @ref="Provider" Theme="_theme" />
+    <MudAppBar Style=@($"background-color: {_theme.PaletteLight.Primary}") Class="" WrapContent="true" Fixed="false">
+        <div style="padding: 15px">
+            <h2 @onclick="OnClick">
+                <label style="color: black" onmouseenter="this.style.cursor = 'pointer'">RetroBoard</label>
+            </h2>
+        </div>
+    </MudAppBar>
+    <MudMainContent >
+        @Body
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+        <div id="blazor-error-ui">
+            An unhandled error has occurred.
+            <a href="" class="reload">Reload</a>
+            <a class="dismiss">🗙</a>
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+@code
+{
+    [Inject]
+    private NavigationManager NavigationManager { get; init; }
+
+    [Inject]
+    private MudThemeProvider Provider { get; set; }
+
+    private readonly MudTheme _theme = new();
+
+    protected override void OnInitialized()
+    {
+        MudColor primary = new(Colors.Primary);
+        MudColor secondary = new(Colors.Secondary);
+        MudColor black = new(Colors.Black);
+
+        _theme.PaletteLight.Primary = primary;
+        _theme.PaletteLight.PrimaryDarken = new("#00CED1");
+        _theme.PaletteLight.PrimaryLighten = new("#AFEEEE");
+
+        _theme.PaletteLight.Secondary = new("#85bbb5");
+        _theme.PaletteLight.SecondaryDarken = secondary.ColorRgbDarken().Value;
+        _theme.PaletteLight.SecondaryLighten = secondary.ColorRgbLighten().Value;
+        // _theme.PaletteLight.SecondaryLighten = new("#757575");
+
+        // _theme.PaletteLight.Background = new("#424242");
+        _theme.PaletteLight.Background = _theme.PaletteLight.SecondaryDarken;
+        _theme.PaletteLight.TextPrimary = black;
+        _theme.PaletteLight.TextSecondary = new("#FFFFFF");
+        _theme.PaletteLight.TextDisabled = new("#212121");
+
+        Provider.Theme = _theme;
+        StateHasChanged();
+    }
+
+    private void OnClick()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -18,10 +18,10 @@ public partial class CardComponent : ComponentBase
     public ColumnRemoveNotificationService NotificationService { get; init; }
 
     [Inject]
-    public RetroBoardService RetroBoardService { get; init; }
+    public IRetroBoardService RetroBoardService { get; init; }
 
     [Inject]
-    public IJSRuntime JsRuntime { get; init; }
+    public PaletteProvider PaletteProvider { get; init; }
 
     [Parameter]
     public Card Card { get; init; }
@@ -61,5 +61,17 @@ public partial class CardComponent : ComponentBase
     {
         Card.ActionItems.Add(new() { Content = _actionItemContent.Trim() });
         _actionItemContent = string.Empty;
+    }
+
+    private void OnToggle(bool toggle)
+    {
+        if (toggle)
+        {
+            Card.Like++;
+        }
+        else
+        {
+            Card.Like--;
+        }
     }
 }

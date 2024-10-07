@@ -11,7 +11,7 @@ public partial class BoardPage : ComponentBase, IDisposable
     private string _newColumnName = String.Empty;
 
     [Inject]
-    private RetroBoardService BoardService { get; set; }
+    private IRetroBoardService BoardService { get; set; }
 
     [Inject]
     private ColumnRemoveNotificationService ColumnRemoveNotificationService { get; set; }
@@ -24,12 +24,10 @@ public partial class BoardPage : ComponentBase, IDisposable
         ColumnRemoveNotificationService.Notification -= OnNotifyAsync;
     }
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        _board = BoardService.Boards.Single(x => x.Id.ToString() == BoardId);
+        _board = BoardService.GetBoards().Single(x => x.Id.ToString() == BoardId);
         ColumnRemoveNotificationService.Notification += OnNotifyAsync;
-
-        return Task.CompletedTask;
     }
 
     private Task OnNotifyAsync() => InvokeAsync(StateHasChanged);

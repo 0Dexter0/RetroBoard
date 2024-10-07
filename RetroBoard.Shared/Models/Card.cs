@@ -8,5 +8,7 @@ public class Card
 
     public string ColumnName { get; set; }
 
+    public int Like { get; set; }
+
     public List<ActionItem> ActionItems { get; set; } = new();
 }

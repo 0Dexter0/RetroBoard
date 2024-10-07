@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using RetroBoard.Shared.Services
 @inject NavigationManager Navigator
-@inject RetroBoardService BoardService
+@inject IRetroBoardService BoardService
 
 <PageTitle>RetroBoard</PageTitle>
 <div class="w-auto d-grid" style="place-items: center; height: 70vh; overflow: hidden">
@@ -16,9 +16,10 @@
         </div>
         <MudButton
             Variant="Variant.Filled"
-            Style="background-color: cornflowerblue"
+            Style=""
+            Color="Color.Secondary"
             Class="ml-2 rounded-5"
-            @onclick="CreateBoard">Create</MudButton>
+            @onclick="CreateBoardAsync">Create</MudButton>
     </div>
 </div>
 
@@ -26,10 +27,10 @@
 {
     public string BoardName { get; set; } = String.Empty;
 
-    private void CreateBoard()
+    private async Task CreateBoardAsync()
     {
-        Board board = new(BoardName) { Id = Guid.NewGuid() };
-        BoardService.Boards.Add(board);
+        Board board = new(BoardName);
+        BoardService.AddBoard(board);
         Navigator.NavigateTo($"boards/{board.Id.ToString()}");
     }
 }
