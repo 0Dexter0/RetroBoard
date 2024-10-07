@@ -41,6 +41,6 @@ public partial class MainLayout
 
     private void OnClick()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo(Environment.GetEnvironmentVariable("REDIRECT") ?? "/");
     }
 }
