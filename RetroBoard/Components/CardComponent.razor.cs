@@ -12,13 +12,16 @@ public partial class CardComponent : ComponentBase
     private string _actionItemContent = string.Empty;
 
     [Inject]
-    public ColumnRemoveNotificationService NotificationService { get; init; }
+    private ColumnRemoveNotificationService NotificationService { get; init; }
 
     [Inject]
-    public IRetroBoardService RetroBoardService { get; init; }
+    private IRetroBoardService RetroBoardService { get; init; }
 
     [Inject]
-    public PaletteProvider PaletteProvider { get; init; }
+    private IPaletteProvider PaletteProvider { get; init; }
+
+    [Inject]
+    private IUserService UserService { get; init; }
 
     [Parameter]
     public Card Card { get; init; }
@@ -64,11 +67,13 @@ public partial class CardComponent : ComponentBase
     {
         if (toggle)
         {
-            Card.Like++;
+            Card.LikedBy.Add(UserService.UserId);
         }
         else
         {
-            Card.Like--;
+            Card.LikedBy.Remove(UserService.UserId);
         }
     }
+
+    private bool IsToggled() => Card.LikedBy.Contains(UserService.UserId);
 }

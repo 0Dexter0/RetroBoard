@@ -9,16 +9,16 @@ public partial class ColumnComponent : ComponentBase
 {
     private bool _isEditPressed = false;
     private bool _isCardCreatePressed = false;
-    private string _cardTitle = String.Empty;
-    private string _cardContent = String.Empty;
-    private string _columnName = String.Empty;
+    private string _cardTitle = string.Empty;
+    private string _cardContent = string.Empty;
+    private string _columnName = string.Empty;
     private bool _isEditButtonVisible = false;
 
     [Inject]
     private IRetroBoardService RetroBoardService { get; set; }
 
     [Inject]
-    private ColumnRemoveNotificationService ColumnRemoveNotificationService { get; set; }
+    private ColumnRemoveNotificationService NotificationService { get; set; }
 
     [Parameter]
     public Column Column { get; set; }
@@ -28,11 +28,19 @@ public partial class ColumnComponent : ComponentBase
         _columnName = Column.Name;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Column.Cards.Any())
+        {
+            await NotificationService.NotifyAsync();
+        }
+    }
+
     private void CreateCard()
     {
         _isCardCreatePressed = false;
 
-        Column.Cards.Add(new() { ColumnName = Column.Name, Title = _cardTitle, Content = _cardContent });
+        Column.Cards.Add(new() { ColumnId = Column.Id.ToString(), Title = _cardTitle, Content = _cardContent });
         _cardTitle = String.Empty;
         _cardContent = String.Empty;
     }
@@ -40,13 +48,13 @@ public partial class ColumnComponent : ComponentBase
     private async Task RemoveColumnAsync(MouseEventArgs obj)
     {
         RetroBoardService.GetBoards().Single(x => x.Id == Column.BoardId).Columns.Remove(Column);
-        await ColumnRemoveNotificationService.NotifyAsync();
+        await NotificationService.NotifyAsync();
     }
 
     private async Task RemoveCardAsync(Card card)
     {
         Column.Cards.Remove(card);
-        await ColumnRemoveNotificationService.NotifyAsync();
+        await NotificationService.NotifyAsync();
     }
 
     private async Task SaveAsync()
@@ -55,7 +63,7 @@ public partial class ColumnComponent : ComponentBase
         _isEditPressed = false;
         _isEditButtonVisible = false;
 
-        // await NotificationService.NotifyAsync("");
+        await NotificationService.NotifyAsync();
     }
 
     private void Discard()

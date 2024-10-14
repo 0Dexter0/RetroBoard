@@ -2,7 +2,7 @@ using MudBlazor;
 
 namespace RetroBoard.Shared.Services;
 
-public class PaletteProvider
+internal class PaletteProvider : IPaletteProvider
 {
     public PaletteLight Theme { get; init; }
 

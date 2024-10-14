@@ -15,7 +15,7 @@
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
 </head>
 
-<body>
+<body onbeforeunload="saveBoardDataBeforeReload()" style="background: #4a616e">
     <div id="app">
         <svg class="loading-progress">
             <circle r="40%" cx="50%" cy="50%" />

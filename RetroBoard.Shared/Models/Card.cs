@@ -6,9 +6,9 @@ public class Card
 
     public string Content { get; set; }
 
-    public string ColumnName { get; set; }
+    public string ColumnId { get; set; }
 
-    public int Like { get; set; }
+    public List<Guid> LikedBy { get; init; } = [];
 
-    public List<ActionItem> ActionItems { get; set; } = new();
+    public List<ActionItem> ActionItems { get; init; } = [];
 }

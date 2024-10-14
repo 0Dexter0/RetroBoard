@@ -2,9 +2,11 @@
 
 public class Column
 {
-    public Guid BoardId { get; set; }
+    public Guid Id { get; init; }
+
+    public Guid BoardId { get; init; }
 
     public string Name { get; set; }
 
-    public List<Card> Cards { get; set; } = new();
+    public List<Card> Cards { get; init; } = [];
 }

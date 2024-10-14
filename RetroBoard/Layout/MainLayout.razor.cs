@@ -31,16 +31,11 @@ public partial class MainLayout
 
         // _theme.PaletteLight.Background = new("#424242");
         _theme.PaletteLight.Background = _theme.PaletteLight.SecondaryDarken;
-        _theme.PaletteLight.TextPrimary = black;
+        _theme.PaletteLight.TextPrimary = new("#FFFFFF");
         _theme.PaletteLight.TextSecondary = new("#FFFFFF");
         _theme.PaletteLight.TextDisabled = new("#212121");
 
         Provider.Theme = _theme;
         StateHasChanged();
-    }
-
-    private void OnClick()
-    {
-        NavigationManager.NavigateTo(NavigationManager.BaseUri);
     }
 }

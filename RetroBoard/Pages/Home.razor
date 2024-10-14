@@ -22,15 +22,3 @@
             @onclick="CreateBoardAsync">Create</MudButton>
     </div>
 </div>
-
-@code
-{
-    public string BoardName { get; set; } = String.Empty;
-
-    private async Task CreateBoardAsync()
-    {
-        Board board = new(BoardName);
-        BoardService.AddBoard(board);
-        Navigator.NavigateTo($"boards/{board.Id.ToString()}");
-    }
-}

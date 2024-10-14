@@ -12,14 +12,15 @@
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent Class="" @onmouseenter="@(() => _isEditButtonVisible = true)" @onmouseleave="@(() => _isEditButtonVisible = false)">
-            <MudTextField @bind-Value="Content" Typo="Typo.h6" Variant="Variant.Outlined" Disabled="true" AutoGrow="true" />
+            <MudTextField @bind-Value="Content" Typo="Typo.h6" Variant="Variant.Outlined" ReadOnly="true" AutoGrow="true" />
             <div class="d-flex w-100 justify-content-between" style="position: absolute; margin-top: -10px; margin-left: -25px">
                 <div class="d-flex align-items-center pl-3">
                     <MudToggleIconButton
                         Icon="@Icons.Material.Filled.ThumbUpAlt"
                         ToggledColor="Color.Primary"
-                        ToggledChanged="OnToggle"/>
-                    <MudText>@Card.Like</MudText>
+                        ToggledChanged="OnToggle"
+                        Toggled="IsToggled()"/>
+                    <MudText>@Card.LikedBy.Count</MudText>
                 </div>
                 <div class="d-flex justify-content-end">
                     <MudIconButton
@@ -49,12 +50,12 @@
             {
                 if (isFirst)
                 {
-                    <MudTextField AutoGrow="true" Value="@item.Content" Disabled="true" />
+                    <MudTextField AutoGrow="true" Value="@item.Content" ReadOnly="true" />
                     isFirst = false;
                     continue;
                 }
                 <MudDivider/>
-                <MudTextField AutoGrow="true" Value="@item.Content" Disabled="true" />
+                <MudTextField AutoGrow="true" Value="@item.Content" ReadOnly="true" />
             }
         </MudExpansionPanel>
     }

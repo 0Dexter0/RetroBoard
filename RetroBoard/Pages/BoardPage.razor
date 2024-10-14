@@ -18,7 +18,7 @@
     <MudDropContainer
         T="Card"
         Items="@_board.Columns.SelectMany(x => x.Cards)"
-        ItemsSelector="@((card, columnName) => card.ColumnName == columnName)"
+        ItemsSelector="@((card, columnId) => card.ColumnId == columnId)"
         ItemDropped="ItemDropped">
         <ChildContent>
             <div style="display: grid; grid-auto-flow: column; grid-template-columns: repeat(auto-fit, minmax(auto, 1fr));">

@@ -16,7 +16,7 @@
             <div style="position: relative; text-align: center" class="mb-5 mt-5">
                 @if (_isEditPressed)
                 {
-                    <MudInput @bind-Value="@_columnName" Variant="Variant.Filled" Style="width: 200px; text-align: center"/>
+                    <MudTextField @bind-Value="@_columnName" Label="Column name" Variant="Variant.Filled" Style="width: 200px; text-align: center"/>
                     <div style="display:flex; flex-direction: row; justify-content: end; align-items: center; margin-bottom: 3px">
                         <MudIconButton
                             Ripple="false"
@@ -35,7 +35,7 @@
                 else
                 {
                     <div @onmouseenter="@(() => _isEditButtonVisible = true)" @onmouseleave="@(() => _isEditButtonVisible = false)">
-                        <MudText Style="width: 200px; text-align: center">@_columnName</MudText>
+                        <MudText Typo="Typo.h5" Style="width: 200px; text-align: center">@_columnName</MudText>
                         <div class="w-100" style="position: absolute; margin-top: -25px">
                             <div class="d-flex justify-content-end">
                                 <MudIconButton
@@ -83,7 +83,7 @@
     </div>
     <div class="h-100">
         <MudList T="Card" Class="h-100"  ReadOnly="false" Style="">
-            <MudDropZone T="Card" Identifier="@Column.Name" AllowReorder="true" Class="h-100">
+            <MudDropZone T="Card" Identifier="@Column.Id.ToString()" AllowReorder="true" Class="h-100">
                 <ItemRenderer>
                     <CardComponent Card="@context" RemoveCardAsync="RemoveCardAsync"/>
                 </ItemRenderer>

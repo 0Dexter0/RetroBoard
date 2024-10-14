@@ -6,8 +6,8 @@
     <MudThemeProvider @ref="Provider" Theme="_theme" />
     <MudAppBar Style=@($"background-color: {_theme.PaletteLight.Primary}") Class="" WrapContent="true" Fixed="false">
         <div style="padding: 15px">
-            <h2 @onclick="OnClick">
-                <label style="color: black" onmouseenter="this.style.cursor = 'pointer'">RetroBoard</label>
+            <h2>
+                <a href="@NavigationManager.BaseUri" style="color: black" onmouseenter="this.style.cursor = 'pointer'">RetroBoard</a>
             </h2>
         </div>
     </MudAppBar>

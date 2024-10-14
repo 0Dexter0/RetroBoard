@@ -5,7 +5,7 @@ namespace RetroBoard.Shared.Services;
 
 internal class RetroBoardService : IRetroBoardService
 {
-    private readonly List<Board> _boards = new();
+    private readonly List<Board> _boards = [];
     private readonly ISyncSessionStorageService _sessionStorageService;
 
     public RetroBoardService(ISyncSessionStorageService sessionStorageService)
@@ -15,9 +15,9 @@ internal class RetroBoardService : IRetroBoardService
 
     public IReadOnlyCollection<Board> GetBoards()
     {
-        if (_sessionStorageService.ContainKey("boards") && !_boards.Any())
+        if (_sessionStorageService.ContainKey(StorageConstants.Boards) && !_boards.Any())
         {
-            _boards.AddRange(_sessionStorageService.GetItem<List<Board>>("boards"));
+            _boards.AddRange(_sessionStorageService.GetItem<List<Board>>(StorageConstants.Boards));
         }
 
         return _boards;
@@ -27,6 +27,6 @@ internal class RetroBoardService : IRetroBoardService
     {
         _boards.Add(board);
 
-        _sessionStorageService.SetItem("boards", _boards);
+        _sessionStorageService.SetItem(StorageConstants.Boards, _boards);
     }
 }
