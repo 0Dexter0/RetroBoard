@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using RetroBoard.Shared;
 using RetroBoard.Shared.Models;
 using RetroBoard.Shared.Services;
 
@@ -41,8 +42,16 @@ public partial class ColumnComponent : ComponentBase
         _isCardCreatePressed = false;
 
         Column.Cards.Add(new() { ColumnId = Column.Id.ToString(), Title = _cardTitle, Content = _cardContent });
-        _cardTitle = String.Empty;
-        _cardContent = String.Empty;
+        _cardTitle = string.Empty;
+        _cardContent = string.Empty;
+    }
+
+    private void DiscardCardCreation()
+    {
+        _isCardCreatePressed = false;
+
+        _cardTitle = string.Empty;
+        _cardContent = string.Empty;
     }
 
     private async Task RemoveColumnAsync(MouseEventArgs obj)

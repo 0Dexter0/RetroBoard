@@ -2,9 +2,10 @@
 
 <MudDialogProvider />
 <MudPopoverProvider />
+<MudSnackbarProvider />
 <MudLayout>
     <MudThemeProvider @ref="Provider" Theme="_theme" />
-    <MudAppBar Style=@($"background-color: {_theme.PaletteLight.Primary}") Class="" WrapContent="true" Fixed="false">
+    <MudAppBar Style=@($"background-color: {_theme.PaletteLight.Primary}") WrapContent="true" Fixed="false">
         <div style="padding: 15px">
             <h2>
                 <a href="@NavigationManager.BaseUri" style="color: black" onmouseenter="this.style.cursor = 'pointer'">RetroBoard</a>
@@ -13,11 +14,5 @@
     </MudAppBar>
     <MudMainContent Style="margin-top: -35px;">
         @Body
-
-        <div id="blazor-error-ui">
-            An unhandled error has occurred.
-            <a href="" class="reload">Reload</a>
-            <a class="dismiss">🗙</a>
-        </div>
     </MudMainContent>
 </MudLayout>

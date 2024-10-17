@@ -1,24 +1,22 @@
 ﻿@page "/"
-@using RetroBoard.Shared.Services
-@inject NavigationManager Navigator
-@inject IRetroBoardService BoardService
 
 <PageTitle>RetroBoard</PageTitle>
 <div class="w-auto d-grid" style="place-items: center; height: 70vh; overflow: hidden">
-    <div class="d-flex" style="font-size: 25px">
-        <div style="width: 350px">
+    <div class="d-flex justify-content-center align-items-start" style="font-size: 25px; width: 350px; height: 100px">
             <MudTextField
                 @bind-Value="BoardName"
                 Variant="Variant.Filled"
                 Class="rounded-2"
                 Style="font-size: 25px"
-                Label="Board name"/>
-        </div>
-        <MudButton
-            Variant="Variant.Filled"
-            Style=""
-            Color="Color.Secondary"
-            Class="ml-2 rounded-5"
-            @onclick="CreateBoardAsync">Create</MudButton>
+                Clearable="true"
+                Label="Board name"
+                Required="true"
+                RequiredError="Board name can't be empty"/>
+            <MudButton
+                Variant="Variant.Filled"
+                Style="height: 60px"
+                Color="Color.Secondary"
+                Class="ml-2 mt-1 rounded-5"
+                @onclick="@(BoardName.IsNullOrEmpty() ? () => {} : CreateBoard)">Create</MudButton>
     </div>
 </div>

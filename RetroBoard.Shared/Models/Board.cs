@@ -7,10 +7,4 @@ public class Board
     public string Name { get; set; }
 
     public List<Column> Columns { get; init; } = [];
-
-    // public Board(string name)
-    // {
-    //     Id = Guid.NewGuid();
-    //     Name = name;
-    // }
 }

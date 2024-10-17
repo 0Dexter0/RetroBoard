@@ -1,12 +1,19 @@
+using Microsoft.AspNetCore.Components;
 using RetroBoard.Shared.Models;
+using RetroBoard.Shared.Services;
 
 namespace RetroBoard.Pages;
 
 public partial class Home
 {
-    public string BoardName { get; set; } = String.Empty;
+    [Inject]
+    private NavigationManager Navigator { get; init; }
 
-    private async Task CreateBoardAsync()
+    [Inject]
+    private IRetroBoardService BoardService { get; init; }
+    public string BoardName { get; set; } = string.Empty;
+
+    private void CreateBoard()
     {
         Board board = new() { Name = BoardName, Id = Guid.NewGuid() };
         BoardService.AddBoard(board);

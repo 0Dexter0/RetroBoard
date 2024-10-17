@@ -16,7 +16,13 @@
             <div style="position: relative; text-align: center" class="mb-5 mt-5">
                 @if (_isEditPressed)
                 {
-                    <MudTextField @bind-Value="@_columnName" Label="Column name" Variant="Variant.Filled" Style="width: 200px; text-align: center"/>
+                    <MudTextField
+                        @bind-Value="@_columnName"
+                        Label="Column name"
+                        Variant="Variant.Filled"
+                        Style="width: 200px; text-align: center"
+                        Required="true"
+                        RequiredError="Column name can't be empty"/>
                     <div style="display:flex; flex-direction: row; justify-content: end; align-items: center; margin-bottom: 3px">
                         <MudIconButton
                             Ripple="false"
@@ -29,7 +35,8 @@
                             Size="Size.Small"
                             Icon="@Icons.Material.Filled.Check"
                             Style=@($"color: {Colors.Black}")
-                            OnClick="SaveAsync"/>
+                            OnClick="SaveAsync"
+                            Disabled="@(_columnName.IsNullOrEmpty())"/>
                     </div>
                 }
                 else
@@ -62,21 +69,36 @@
         else
         {
             <div>
-                <MudTextField T="string" @bind-Value="_cardTitle" Variant="Variant.Filled" Label="Title" Class="pr-3 pl-3 pb-1"/>
-                <MudTextField Class="d-flex pr-3 pl-3" T="string" AutoGrow="true" @bind-Value="_cardContent" Variant="Variant.Filled" Label="Content" />
+                <MudTextField
+                    T="string"
+                    @bind-Value="_cardTitle"
+                    Variant="Variant.Filled"
+                    Label="Title"
+                    Class="pr-3 pl-3 pb-1"
+                    Required="true"
+                    RequiredError="Card title can't be empty"/>
+                <MudTextField
+                    Class="d-flex pr-3 pl-3"
+                    T="string"
+                    AutoGrow="true"
+                    @bind-Value="_cardContent"
+                    Variant="Variant.Filled"
+                    Label="Content"
+                    Required="true"
+                    RequiredError="Card content can't be empty"/>
                 
                 <div class="d-flex align-center justify-content-end ma-2">
                     <MudIconButton
                         Size="Size.Small"
                         Icon="@Icons.Material.Filled.Close"
-                        OnClick="@(() => _isCardCreatePressed = false)"
+                        OnClick="DiscardCardCreation"
                         Style=@($"color: {Colors.Black}")/>
                     <div style="width: 5px"></div>
                     <MudIconButton 
                         Size="Size.Small"
                         Icon="@Icons.Material.Filled.Check"
-                        OnClick="CreateCard"
-                        Style=@($"color: {Colors.Black}")/>
+                        OnClick="@(_cardTitle.IsNullOrEmpty() || _cardContent.IsNullOrEmpty() ? () => {}  : CreateCard)"
+                        Style=@($"color: {Colors.Black}") />
                 </div>
             </div>
         }

@@ -9,8 +9,6 @@ ide: QDNET
 profile:
   name: qodana.starter
 include:
-  - name: AutoPropertyCanBeMadeGetOnly.Global
-  - name: PropertyCanBeMadeInitOnly.Global
   - name: UnusedMemberInSuper.Global
   - name: UseCollectionExpression
   - name: CA1816

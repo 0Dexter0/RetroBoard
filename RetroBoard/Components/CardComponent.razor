@@ -62,11 +62,28 @@
     else
     {
         <MudCardContent Class="" Style="">
-            <MudTextField Label="Title" Variant="Variant.Filled" T="string" @bind-Value="Title" />
-            <MudTextField Label="Content" Variant="Variant.Filled" AutoGrow="true" @bind-Value="@Content" />
+            <MudTextField
+                Label="Title"
+                Variant="Variant.Filled"
+                T="string"
+                @bind-Value="Title"
+                Required="true"
+                RequiredError="Tittle can't be empty"/>
+            <MudTextField
+                Label="Content"
+                Variant="Variant.Filled"
+                AutoGrow="true"
+                @bind-Value="@Content"
+                Required="true"
+                RequiredError="Content can't be empty"/>
             <div style="display:flex; flex-direction: row; justify-content: end; align-items: center; margin-bottom: 3px">
                 <MudIconButton Ripple="false" Size="Size.Small" Icon="@Icons.Material.Filled.Close" Style=@($"color: {Colors.Black}") OnClick="Discard"/>
-                <MudIconButton Ripple="false" Size="Size.Small" Icon="@Icons.Material.Filled.Check" Style=@($"color: {Colors.Black}") OnClick="SaveAsync"/>
+                <MudIconButton
+                    Ripple="false"
+                    Size="Size.Small"
+                    Icon="@Icons.Material.Filled.Check"
+                    Style=@($"color: {Colors.Black}")
+                    OnClick="@(Title.IsNullOrEmpty() || Content.IsNullOrEmpty() ? () => {} : Save)"/>
             </div>
         </MudCardContent>
     }

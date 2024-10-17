@@ -39,14 +39,12 @@ public partial class CardComponent : ComponentBase
         Content = Card.Content;
     }
 
-    private async Task SaveAsync()
+    private void Save()
     {
         Card.Title = Title.Trim();
         Card.Content = Content.Trim();
         _isEditPressed = false;
         _isEditButtonVisible = false;
-
-        // await NotificationService.NotifyAsync("");
     }
 
     private void Discard()

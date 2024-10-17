@@ -8,9 +8,23 @@
 
 <div class="d-flex justify-content-sm-between ml-5 mr-5 mb-5 align-items-center">
     <BoardHeader BoardName="@_board.Name" />
-    <div style=" display: flex; justify-content: center; align-items: center; width: 400px;">
-        <MudTextField AutoGrow="false" Margin="Margin.Dense" Clearable="true" FullWidth="false" Variant="Variant.Filled" Label="Column name" @bind-Value="_newColumnName" Style="font-size: x-large; margin-right: 5px; border-radius: 5px" />
-        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Rounded.Add" @onclick="CreateColumn" Size="Size.Medium"/>
+    <div style="width: 400px; height: 80px" class="d-flex justify-content-center align-items-start">
+        <MudTextField
+            Margin="Margin.Dense"
+            Clearable="true"
+            FullWidth="false"
+            Variant="Variant.Filled"
+            Label="Column name"
+            @bind-Value="_newColumnName"
+            Style="font-size: x-large; margin-right: 5px; border-radius: 5px"
+            Required="true"
+            RequiredError="Column name can't be empty"/>
+        <MudFab
+            Color="Color.Secondary"
+            StartIcon="@Icons.Material.Rounded.Add"
+            @onclick="@(_newColumnName.IsNullOrEmpty() ? () => {} : CreateColumn)"
+            Size="Size.Medium"
+            Class="mt-2"/>
     </div>
 </div>
 

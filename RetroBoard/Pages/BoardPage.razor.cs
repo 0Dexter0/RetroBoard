@@ -11,7 +11,7 @@ namespace RetroBoard.Pages;
 public partial class BoardPage : ComponentBase, IDisposable
 {
     private Board _board;
-    private string _newColumnName = String.Empty;
+    private string _newColumnName = string.Empty;
 
     private static Action _callSave;
 
@@ -25,7 +25,10 @@ public partial class BoardPage : ComponentBase, IDisposable
     private ISyncSessionStorageService SessionStorageService { get; init; }
 
     [Inject]
-    private IJSRuntime JsRuntime { get; init; }
+    private ISnackbar Snackbar { get; init; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; init; }
 
     [Parameter]
     public string BoardId { get; set; }
@@ -40,19 +43,26 @@ public partial class BoardPage : ComponentBase, IDisposable
 
     protected override async Task OnInitializedAsync()
     {
-        _board = BoardService.GetBoards().Single(x => x.Id.ToString() == BoardId);
+        _board = BoardService.GetBoards().SingleOrDefault(x => x.Id.ToString() == BoardId);
+
+        if (_board is null)
+        {
+            Snackbar.Add($"No board found with the id: {BoardId}", Severity.Error);
+            NavigationManager.NavigateTo(NavigationManager.BaseUri);
+
+            return;
+        }
+
         ColumnRemoveNotificationService.Notification += OnNotifyAsync;
         _callSave = SaveBeforeReloadInternal;
     }
-
-    // protected override Task OnParametersSetAsync() => OnNotifyAsync();
 
     private Task OnNotifyAsync() => InvokeAsync(StateHasChanged);
 
     private void CreateColumn()
     {
         Column column = new() { Name = _newColumnName.Trim(), BoardId = _board.Id, Id = Guid.NewGuid() };
-        _newColumnName = String.Empty;
+        _newColumnName = string.Empty;
         _board.Columns.Add(column);
     }
 
@@ -61,12 +71,14 @@ public partial class BoardPage : ComponentBase, IDisposable
         string oldColumnName = itemInfo.Item!.ColumnId;
         itemInfo.Item.ColumnId = itemInfo.DropzoneIdentifier;
 
-        if (oldColumnName != itemInfo.DropzoneIdentifier)
+        if (oldColumnName == itemInfo.DropzoneIdentifier)
         {
-            var oldColumn = _board.Columns.First(x => x.Id.ToString() == oldColumnName);
-            oldColumn.Cards.RemoveAt(oldColumn.Cards.FindIndex(x => x.Content == itemInfo.Item.Content));
-            _board.Columns.First(x => x.Id.ToString() == itemInfo.Item.ColumnId).Cards.Add(itemInfo.Item);
+            return;
         }
+
+        var oldColumn = _board.Columns.First(x => x.Id.ToString() == oldColumnName);
+        oldColumn.Cards.RemoveAt(oldColumn.Cards.FindIndex(x => x.Content == itemInfo.Item.Content));
+        _board.Columns.First(x => x.Id.ToString() == itemInfo.Item.ColumnId).Cards.Add(itemInfo.Item);
     }
 
     private void SaveBeforeReloadInternal()

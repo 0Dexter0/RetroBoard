@@ -19,7 +19,6 @@ public partial class MainLayout
     {
         MudColor primary = new(Colors.Primary);
         MudColor secondary = new(Colors.Secondary);
-        MudColor black = new(Colors.Black);
 
         _theme.PaletteLight.Primary = primary;
         _theme.PaletteLight.PrimaryDarken = new("#00CED1");
@@ -29,7 +28,6 @@ public partial class MainLayout
         _theme.PaletteLight.SecondaryDarken = secondary.ColorRgbDarken().Value;
         _theme.PaletteLight.SecondaryLighten = secondary.ColorRgbLighten().Value;
 
-        // _theme.PaletteLight.Background = new("#424242");
         _theme.PaletteLight.Background = _theme.PaletteLight.SecondaryDarken;
         _theme.PaletteLight.TextPrimary = new("#FFFFFF");
         _theme.PaletteLight.TextSecondary = new("#FFFFFF");
