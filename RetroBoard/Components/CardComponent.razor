@@ -4,46 +4,58 @@
 <MudCard Class="border-1 rounded-1 m-1" Style=@($"background-color: {PaletteProvider.Theme.SecondaryLighten}")>
     @if (!_isEditPressed)
     {
-        <MudCardHeader Style="">
-            <CardHeaderContent>
-                <div class="d-flex align-center justify-center">
-                    <MudText Class="mb-2 text-center" Style="font-size: 21px; width: fit-content">@Title</MudText>
+        <div @onmouseenter="@(() => _isEditButtonVisible = true)" @onmouseleave="@(() => _isEditButtonVisible = false)">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div class="d-flex align-center justify-center">
+                        <MudText Class="mb-2 text-center" Style="font-size: 21px; width: fit-content">@Title</MudText>
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTextField @bind-Value="Content" Typo="Typo.h6" Variant="Variant.Outlined" ReadOnly="true" AutoGrow="true" Clearable="true" />
+                <div class="d-flex w-100 justify-content-between" style="position: absolute; margin-top: -10px; margin-left: -25px">
+                    <div class="d-flex align-items-center pl-3">
+                        <MudToggleIconButton
+                            Icon="@Icons.Material.Filled.ThumbUpAlt"
+                            ToggledColor="Color.Primary"
+                            ToggledChanged="OnToggle"
+                            Toggled="IsToggled()"/>
+                        <MudText>@Card.LikedBy.Count</MudText>
+                    </div>
+                    <div class="d-flex justify-content-end" style="width: 50px">
+                        <MudIconButton
+                            Ripple="false"
+                            hidden="@(!_isEditButtonVisible)"
+                            Icon="@Icons.Material.Filled.Delete"
+                            Size="Size.Small"
+                            @onclick="@(() => RemoveCardAsync(Card))"
+                            Style=@($"margin: 5px 5px; color: {Colors.Black}; width: 20px")/>
+                        <MudIconButton
+                            Ripple="false"
+                            hidden="@(!_isEditButtonVisible)"
+                            Icon="@Icons.Material.Filled.Edit"
+                            Size="Size.Small"
+                            @onclick="() => _isEditPressed = true"
+                            Style=@($"margin: 5px 5px; color: {Colors.Black}")/>
+                    </div>
                 </div>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent Class="" @onmouseenter="@(() => _isEditButtonVisible = true)" @onmouseleave="@(() => _isEditButtonVisible = false)">
-            <MudTextField @bind-Value="Content" Typo="Typo.h6" Variant="Variant.Outlined" ReadOnly="true" AutoGrow="true" />
-            <div class="d-flex w-100 justify-content-between" style="position: absolute; margin-top: -10px; margin-left: -25px">
-                <div class="d-flex align-items-center pl-3">
-                    <MudToggleIconButton
-                        Icon="@Icons.Material.Filled.ThumbUpAlt"
-                        ToggledColor="Color.Primary"
-                        ToggledChanged="OnToggle"
-                        Toggled="IsToggled()"/>
-                    <MudText>@Card.LikedBy.Count</MudText>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <MudIconButton
-                        Ripple="false"
-                        hidden="@(!_isEditButtonVisible)"
-                        Icon="@Icons.Material.Filled.Delete"
-                        Size="Size.Small"
-                        @onclick="@(() => RemoveCardAsync(Card))"
-                        Style=@($"margin: 5px 5px; color: {Colors.Black}")/>
-                    <MudIconButton
-                        Ripple="false"
-                        hidden="@(!_isEditButtonVisible)"
-                        Icon="@Icons.Material.Filled.Edit"
-                        Size="Size.Small"
-                        @onclick="() => _isEditPressed = true"
-                        Style=@($"margin: 5px 5px; color: {Colors.Black}")/>
-                </div>
-            </div>
-        </MudCardContent>
+            </MudCardContent>
+        </div>
         <MudExpansionPanel Text="Action items" Style="background-color: transparent">
             <div class="d-flex align-center pb-5">
-                <MudTextField AutoGrow="true" @bind-Value="@_actionItemContent"/>
-                <MudFab StartIcon="@Icons.Material.Rounded.Add" @onclick="CreateActionItem" Size="Size.Small" Class="ml-2"/>
+                <MudTextField
+                    AutoGrow="true"
+                    @bind-Value="@_actionItemContent"
+                    Clearable="true"
+                    Immediate="true"
+                    Required="true"
+                    RequiredError="Action item text can't be empty"/>
+                <MudFab
+                    StartIcon="@Icons.Material.Rounded.Add"
+                    @onclick="@(_actionItemContent.IsNullOrEmpty() ? () => {}  : CreateActionItem)"
+                    Size="Size.Small"
+                    Class="ml-2"/>
             </div>
             @{ bool isFirst = true; }
             @foreach (var item in Card.ActionItems)
@@ -61,12 +73,14 @@
     }
     else
     {
-        <MudCardContent Class="" Style="">
+        <MudCardContent>
             <MudTextField
                 Label="Title"
                 Variant="Variant.Filled"
                 T="string"
                 @bind-Value="Title"
+                Clearable="true"
+                Immediate="true"
                 Required="true"
                 RequiredError="Tittle can't be empty"/>
             <MudTextField
@@ -74,6 +88,8 @@
                 Variant="Variant.Filled"
                 AutoGrow="true"
                 @bind-Value="@Content"
+                Clearable="true"
+                Immediate="true"
                 Required="true"
                 RequiredError="Content can't be empty"/>
             <div style="display:flex; flex-direction: row; justify-content: end; align-items: center; margin-bottom: 3px">

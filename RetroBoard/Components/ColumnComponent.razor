@@ -21,8 +21,9 @@
                         Label="Column name"
                         Variant="Variant.Filled"
                         Style="width: 200px; text-align: center"
-                        Required="true"
-                        RequiredError="Column name can't be empty"/>
+                        Clearable="true"
+                        Immediate="true"
+                        Required="true"/>
                     <div style="display:flex; flex-direction: row; justify-content: end; align-items: center; margin-bottom: 3px">
                         <MudIconButton
                             Ripple="false"
@@ -35,8 +36,7 @@
                             Size="Size.Small"
                             Icon="@Icons.Material.Filled.Check"
                             Style=@($"color: {Colors.Black}")
-                            OnClick="SaveAsync"
-                            Disabled="@(_columnName.IsNullOrEmpty())"/>
+                            OnClick="@(_columnName.IsNullOrEmpty() ? () => { return Task.CompletedTask; } : SaveAsync)"/>
                     </div>
                 }
                 else
@@ -75,12 +75,16 @@
                     Variant="Variant.Filled"
                     Label="Title"
                     Class="pr-3 pl-3 pb-1"
+                    Clearable="true"
+                    Immediate="true"
                     Required="true"
                     RequiredError="Card title can't be empty"/>
                 <MudTextField
                     Class="d-flex pr-3 pl-3"
                     T="string"
                     AutoGrow="true"
+                    Clearable="true"
+                    Immediate="true"
                     @bind-Value="_cardContent"
                     Variant="Variant.Filled"
                     Label="Content"
